@@ -1,5 +1,8 @@
 import axios from 'axios';
+import router from '../router';
 import AuthService from './auth';
+import usersService from './users';
+import { setGlobalLoading } from '../store/global';
 
 const API_ENVS = {
   production: '',
@@ -11,11 +14,31 @@ const httpClient = axios.create({
   baseURL: API_ENVS.local,
 });
 
-httpClient.interceptors.response.use((response) => response, (error) => {
-  const canThrowAnError = error.request.status === 0 || error.request.status === 500;
+httpClient.interceptors.request.use((config) => {
+  setGlobalLoading(true);
 
+  const token = window.localStorage.getItem('feedbacker-token');
+
+  if (token) {
+    config.headers.common.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+
+httpClient.interceptors.response.use((response) => {
+  setGlobalLoading(false);
+  return response;
+}, (error) => {
+  setGlobalLoading(false);
+
+  const canThrowAnError = error.request.status === 0 || error.request.status === 500;
   if (canThrowAnError) {
     throw new Error(error.message);
+  }
+
+  if (error.response.status === 401) {
+    router.push({ name: 'Home' });
   }
 
   return error;
@@ -23,4 +46,5 @@ httpClient.interceptors.response.use((response) => response, (error) => {
 
 export default {
   auth: AuthService(httpClient),
+  users: usersService(httpClient),
 };
