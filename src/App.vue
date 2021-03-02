@@ -18,7 +18,7 @@ export default {
 
     watch(() => route.path, async () => {
       if (route.meta.hasAuth) {
-        const token = window.localStorage.getItem('feedbaker-token');
+        const token = window.localStorage.getItem('feedbacker-token');
 
         if (!token) {
           router.push({ name: 'Home' });
