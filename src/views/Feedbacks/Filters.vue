@@ -18,6 +18,7 @@
             :class="`bg-${filter.color}`"
             class="inline-block w-2 h-2 mr-2 rounded-full"
           />
+          {{ filter.label }}
         </div>
         <span
           :class="filter.active ? `text-${filter.color}` : `text-brand-graydark`"
