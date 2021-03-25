@@ -50,7 +50,7 @@
 
 <script>
 import {
-  handleError, onErrorCaptured, onMounted, onUnmounted, reactive,
+  onErrorCaptured, onMounted, onUnmounted, reactive,
 } from 'vue';
 import HeaderLogged from '../../components/HeaderLogged/index.vue';
 import FeedbackCard from '../../components/FeedbackCard/index.vue';
@@ -139,7 +139,7 @@ export default {
         state.pagination = data.pagination;
         state.isLoadingMoreFeedbacks = false;
       } catch (error) {
-        handleError(error);
+        handleErrors(error);
       }
     }
 

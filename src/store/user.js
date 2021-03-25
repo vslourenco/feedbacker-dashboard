@@ -1,10 +1,17 @@
 import { reactive } from 'vue';
 
-const state = reactive({
+const userInitialState = {
   currentUser: {},
-});
+};
+
+// eslint-disable-next-line import/no-mutable-exports
+let state = reactive(userInitialState);
 
 export default state;
+
+export function resetUserStore() {
+  state = reactive(userInitialState);
+}
 
 export function setCurrentUser(user) {
   state.currentUser = user;
